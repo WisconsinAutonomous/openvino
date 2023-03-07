@@ -43,8 +43,13 @@ const std::set<ov::element::Type> SupportedElementTypes::supported_parameter_typ
 bool SupportedElementTypes::is_parameter_type_supported(ov::element::Type elem_type, bool is_exception_allowed) {
     if (supported_parameter_types.count(elem_type) == 0) {
         if (is_exception_allowed) {
+            std::set<ov::element::Type>::iterator itr;
+            std::string str = "";
+            for (itr = supported_parameter_types.begin(); itr != supported_parameter_types.end(); itr++){
+                str += " " + itr->get_type_name();
+            }
             THROW_GNA_EXCEPTION << "The plugin does not support input precision with " << elem_type.get_type_name()
-                                << " format. Supported precisions " << supported_parameter_types << "\n";
+                                << " format. Supported precisions " << str<< "\n";
         }
         return false;
     }
@@ -62,8 +67,15 @@ const std::set<ov::element::Type> SupportedElementTypes::supported_constant_type
 bool SupportedElementTypes::is_constant_type_supported(ov::element::Type elem_type, bool is_exception_allowed) {
     if (supported_constant_types.count(elem_type) == 0) {
         if (is_exception_allowed) {
+            if (is_exception_allowed) {
+                std::set<ov::element::Type>::iterator itr;
+                std::string str = "";
+                for (itr = supported_parameter_types.begin(); itr != supported_parameter_types.end(); itr++){
+                    str += " " + itr->get_type_name();
+                }
             THROW_GNA_EXCEPTION << "The plugin does not support constant precision with " << elem_type.get_type_name()
-                                << " format. Supported precisions " << supported_constant_types << "\n";
+                                << " format. Supported precisions " << str << "\n";
+            }
         }
         return false;
     }
